@@ -22,9 +22,14 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        <RigidBody>
-          <mesh castShadow position={[2, 2, 0]}>
-            <boxGeometry />
+        {/* generally only use trimesh for non-dynamic bodies like floors, fast objects can go thru them sometimes otherwise */}
+        <RigidBody colliders="trimesh">
+          <mesh
+            castShadow
+            position={[-2, 1, 0]}
+            rotation={[Math.PI * 0.5, 0, 0]}
+          >
+            <torusGeometry args={[1, 0.5, 16, 32]} />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
