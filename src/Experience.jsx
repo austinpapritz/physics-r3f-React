@@ -25,10 +25,12 @@ export default function Experience() {
           <meshStandardMaterial color="mediumpurple" />
         </mesh>
 
-        <mesh receiveShadow position-y={-1.25}>
-          <boxGeometry args={[10, 0.5, 10]} />
-          <meshStandardMaterial color="greenyellow" />
-        </mesh>
+        <RigidBody type="fixed">
+          <mesh receiveShadow position-y={-1.25}>
+            <boxGeometry args={[10, 0.5, 10]} />
+            <meshStandardMaterial color="greenyellow" />
+          </mesh>
+        </RigidBody>
       </Physics>
     </>
   )
