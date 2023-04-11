@@ -15,6 +15,11 @@ export default function Experience() {
 
   const cubeJump = () => {
     cubeRef.current.applyImpulse({ x: 0, y: 5, z: 0 })
+    cubeRef.current.applyTorqueImpulse({
+      x: Math.random() - 0.5,
+      y: Math.random() - 0.5,
+      z: Math.random() - 0.5,
+    })
   }
 
   return (
