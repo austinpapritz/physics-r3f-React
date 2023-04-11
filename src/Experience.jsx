@@ -1,6 +1,12 @@
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
-import { Physics, RigidBody, Debug } from '@react-three/rapier'
+import {
+  Physics,
+  RigidBody,
+  Debug,
+  CuboidCollider,
+  BallCollider,
+} from '@react-three/rapier'
 
 export default function Experience() {
   return (
@@ -16,19 +22,21 @@ export default function Experience() {
         <Debug />
         {/* RigidBody creates a collision cuboidal, it works with multiple meshes for one RigidBody  */}
         <RigidBody colliders="ball">
-          <mesh castShadow position={[-2, 2, 0]}>
+          <mesh castShadow position={[0, 4, 0]}>
             <sphereGeometry />
             <meshStandardMaterial color="orange" />
           </mesh>
         </RigidBody>
 
-        {/* generally only use trimesh for non-dynamic bodies like floors, fast objects can go thru them sometimes otherwise */}
-        <RigidBody colliders="trimesh">
-          <mesh
-            castShadow
-            position={[-2, 1, 0]}
-            rotation={[Math.PI * 0.5, 0, 0]}
-          >
+        <RigidBody
+          colliders={false}
+          position={[0, 1, 0]}
+          rotation={[Math.PI * 0.5, 0, 0]}
+        >
+          <CuboidCollider args={[1.5, 1.5, 0.5]} />
+          <CuboidCollider args={[0.25, 1, 0.25]} position={[0, 0, 1]} />
+
+          <mesh castShadow>
             <torusGeometry args={[1, 0.5, 16, 32]} />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
