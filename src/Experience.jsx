@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import {
@@ -10,6 +11,12 @@ import {
 } from '@react-three/rapier'
 
 export default function Experience() {
+  const cubeRef = useRef()
+
+  const cubeJump = () => {
+    console.log('jump')
+  }
+
   return (
     <>
       <Perf position="top-left" />
@@ -21,6 +28,8 @@ export default function Experience() {
 
       <Physics>
         <Debug />
+
+        {/* Ball */}
         {/* RigidBody creates a collision cuboidal, it works with multiple meshes for one RigidBody  */}
         <RigidBody colliders="ball">
           <mesh castShadow position={[0, 4, 0]}>
@@ -29,19 +38,15 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        <RigidBody
-          colliders={false}
-          position={[0, 1, 0]}
-          rotation={[Math.PI * 0.5, 0, 0]}
-        >
-          <BallCollider args={[1.5]} />
-
-          <mesh castShadow>
-            <torusGeometry args={[1, 0.5, 16, 32]} />
+        {/* Cube */}
+        <RigidBody ref={cubeRef} position={[1.5, 2, 0]}>
+          <mesh castShadow onClick={cubeJump}>
+            <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
 
+        {/* Floor */}
         <RigidBody type="fixed">
           <mesh receiveShadow position-y={-1.25}>
             <boxGeometry args={[10, 0.5, 10]} />
