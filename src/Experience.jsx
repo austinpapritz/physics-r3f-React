@@ -14,7 +14,7 @@ export default function Experience() {
   const cubeRef = useRef()
 
   const cubeJump = () => {
-    console.log('jump')
+    cubeRef.current.applyImpulse({ x: 0, y: 5, z: 0 })
   }
 
   return (
