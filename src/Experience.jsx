@@ -48,7 +48,8 @@ export default function Experience() {
           ref={cubeRef}
           position={[1.5, 2, 0]}
           gravityScale={1}
-          restitution={1}
+          restitution={0.5}
+          friction={0.7}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
