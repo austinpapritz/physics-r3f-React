@@ -70,6 +70,18 @@ export default function Experience() {
             <meshStandardMaterial color="greenyellow" />
           </mesh>
         </RigidBody>
+
+        {/* kinematic */}
+        <RigidBody
+          position={[0, -0.8, 0]}
+          friction={0}
+          type="kinematicPosition"
+        >
+          <mesh castShadow scale={[0.4, 0.4, 3]}>
+            <boxGeometry />
+            <meshStandardMaterial color="red" />
+          </mesh>
+        </RigidBody>
       </Physics>
     </>
   )
