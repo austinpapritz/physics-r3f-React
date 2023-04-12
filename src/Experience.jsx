@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useFrame } from '@react-three/fiber'
@@ -10,10 +10,31 @@ import {
   CylinderCollider,
   BallCollider,
   HeightfieldCollider,
+  InstancedRigidBodies,
 } from '@react-three/rapier'
 import * as THREE from 'three'
 
 export default function Experience() {
+  // TESTING PERFORMANCE WITH CUBES
+  const cubesCount = 3
+  const cubesRef = useRef()
+  // rendering the cubes on load
+  useEffect(() => {
+    for (let i = 0; i < cubesCount; i++) {
+      const matrix = new THREE.Matrix4()
+      matrix.compose(
+        new THREE.Vector3(i * 2, 0, 0),
+        new THREE.Quaternion(),
+        new THREE.Vector3(
+          Math.random() * 2,
+          Math.random() * 2,
+          Math.random() * 2
+        )
+      )
+      cubesRef.current.setMatrixAt(i, matrix)
+    }
+  }, [])
+
   const burger = useGLTF('./hamburger.glb')
 
   // this is a trick to save a sound to state so it doesn't overplay on re-renders
@@ -126,6 +147,25 @@ export default function Experience() {
             <meshStandardMaterial color="red" />
           </mesh>
         </RigidBody>
+
+        {/* Rigid walls */}
+        {/* these are invisible fixed walls to keep objects inside */}
+        <RigidBody type="fixed">
+          <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, 5.5]} />
+          <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, -5.5]} />
+          <CuboidCollider args={[0.5, 2, 5]} position={[5.26, 1, 0]} />
+          <CuboidCollider args={[0.5, 2, 5]} position={[-5.5, 1, 0]} />
+        </RigidBody>
+
+        {/* Cubes for testing perf */}
+        <instancedMesh
+          castShadows
+          ref={cubesRef}
+          args={[null, null, cubesCount]}
+        >
+          <boxGeometry />
+          <meshStandardMaterial color="tomato" />
+        </instancedMesh>
       </Physics>
     </>
   )
