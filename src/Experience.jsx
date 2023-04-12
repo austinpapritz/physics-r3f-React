@@ -52,11 +52,11 @@ export default function Experience() {
   })
 
   // adds sound to a collision
-  const collisionEnter = () => {
-    hitSound.currentTime = 0
-    hitSound.volume = Math.random()
-    hitSound.play()
-  }
+  // const collisionEnter = () => {
+  //   hitSound.currentTime = 0
+  //   hitSound.volume = Math.random()
+  //   hitSound.play()
+  // }
 
   return (
     <>
@@ -81,6 +81,7 @@ export default function Experience() {
 
         {/* Cube */}
         {/* if you want custom mass, you must disable colliders in RigidBody then apply to collider  */}
+        {/* use onSleep or onWake for collision physics to save a TON on perfs */}
         <RigidBody
           ref={cubeRef}
           position={[1.5, 2, 0]}
