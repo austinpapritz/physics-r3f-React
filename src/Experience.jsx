@@ -31,7 +31,7 @@ export default function Experience() {
       <directionalLight castShadow position={[1, 2, 3]} intensity={1.5} />
       <ambientLight intensity={0.5} />
 
-      <Physics>
+      <Physics gravity={[0, -1.6, 0]}>
         <Debug />
 
         {/* Ball */}
