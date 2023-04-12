@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
+import { useFrame } from '@react-three/fiber'
 import {
   Physics,
   RigidBody,
@@ -9,9 +10,11 @@ import {
   BallCollider,
   HeightfieldCollider,
 } from '@react-three/rapier'
+import * as THREE from 'three'
 
 export default function Experience() {
   const cubeRef = useRef()
+  const twisterRef = useRef()
 
   const cubeJump = () => {
     // declare mass to normalize the jump animation no matter what mass
@@ -24,6 +27,26 @@ export default function Experience() {
       z: Math.random() - 0.5,
     })
   }
+
+  // spinning kinematic object animation
+  useFrame((state) => {
+    //save the elapsed time value from the state
+    const time = state.clock.getElapsedTime()
+
+    // we have to convert a Euler to a Quaternion
+    // to speed up the animation, give time a coefficient
+    const eulerRotation = new THREE.Euler(0, time * 3, 0)
+    const quaternionRotation = new THREE.Quaternion()
+    quaternionRotation.setFromEuler(eulerRotation)
+    twisterRef.current.setNextKinematicRotation(quaternionRotation)
+
+    // now to animate the spinning object itself using trigonometry
+    const angle = time * 0.5
+    const x = Math.cos(angle) * 2
+    const z = Math.sin(angle) * 2
+    // the y value is the value of the y on the object itself
+    twisterRef.current.setNextKinematicTranslation({ x: x, y: -0.8, z: z })
+  })
 
   return (
     <>
@@ -40,7 +63,7 @@ export default function Experience() {
         {/* Ball */}
         {/* RigidBody creates a collision cuboidal, it works with multiple meshes for one RigidBody  */}
         <RigidBody colliders="ball">
-          <mesh castShadow position={[0, 4, 0]}>
+          <mesh castShadow position={[-1, 4, 0]}>
             <sphereGeometry />
             <meshStandardMaterial color="orange" />
           </mesh>
@@ -71,8 +94,9 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* kinematic */}
+        {/* twister kinematic */}
         <RigidBody
+          ref={twisterRef}
           position={[0, -0.8, 0]}
           friction={0}
           type="kinematicPosition"
