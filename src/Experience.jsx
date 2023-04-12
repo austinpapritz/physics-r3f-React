@@ -31,7 +31,7 @@ export default function Experience() {
       <directionalLight castShadow position={[1, 2, 3]} intensity={1.5} />
       <ambientLight intensity={0.5} />
 
-      <Physics gravity={[0, -1.6, 0]}>
+      <Physics gravity={[0, -9.81, 0]}>
         <Debug />
 
         {/* Ball */}
@@ -44,7 +44,7 @@ export default function Experience() {
         </RigidBody>
 
         {/* Cube */}
-        <RigidBody ref={cubeRef} position={[1.5, 2, 0]}>
+        <RigidBody ref={cubeRef} position={[1.5, 2, 0]} gravityScale={0.2}>
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
