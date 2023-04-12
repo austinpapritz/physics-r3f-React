@@ -44,17 +44,20 @@ export default function Experience() {
         </RigidBody>
 
         {/* Cube */}
+        {/* if you want custom mass, you must disable colliders in RigidBody then apply to collider  */}
         <RigidBody
           ref={cubeRef}
           position={[1.5, 2, 0]}
           gravityScale={1}
           restitution={0.5}
           friction={0.7}
+          colliders={false}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
+          <CuboidCollider mass={5} args={[0.5, 0.5, 0.5]} />
         </RigidBody>
 
         {/* Floor */}
