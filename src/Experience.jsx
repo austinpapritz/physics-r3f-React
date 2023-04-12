@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useFrame } from '@react-three/fiber'
@@ -18,21 +18,36 @@ export default function Experience() {
   // TESTING PERFORMANCE WITH CUBES
   const cubesCount = 3
   const cubesRef = useRef()
-  // rendering the cubes on load
-  useEffect(() => {
+  // rendering the cubes on load, if you want them to have physics you have to put the matrix values in the InstancedRigidZBodies
+  // useEffect(() => {
+  //   for (let i = 0; i < cubesCount; i++) {
+  //     const matrix = new THREE.Matrix4()
+  //     matrix.compose(
+  //       new THREE.Vector3(i * 2, 0, 0),
+  //       new THREE.Quaternion(),
+  //       new THREE.Vector3(
+  //         Math.random() * 2,
+  //         Math.random() * 2,
+  //         Math.random() * 2
+  //       )
+  //     )
+  //     cubesRef.current.setMatrixAt(i, matrix)
+  //   }
+  // }, [])
+
+  const cubesTransform = useMemo(() => {
+    const positions = []
+    const rotations = []
+    const scales = []
+
     for (let i = 0; i < cubesCount; i++) {
-      const matrix = new THREE.Matrix4()
-      matrix.compose(
-        new THREE.Vector3(i * 2, 0, 0),
-        new THREE.Quaternion(),
-        new THREE.Vector3(
-          Math.random() * 2,
-          Math.random() * 2,
-          Math.random() * 2
-        )
-      )
-      cubesRef.current.setMatrixAt(i, matrix)
+      positions.push([i * 2, 0, 0])
+      rotations.push([0, 0, 0])
+      scales.push([Math.random() * 2, Math.random() * 2, Math.random() * 2])
     }
+    console.log('positions, rotations, scales', positions, rotations, scales)
+
+    return { positions, rotations, scales }
   }, [])
 
   const burger = useGLTF('./hamburger.glb')
@@ -158,14 +173,20 @@ export default function Experience() {
         </RigidBody>
 
         {/* Cubes for testing perf */}
-        <instancedMesh
-          castShadows
-          ref={cubesRef}
-          args={[null, null, cubesCount]}
+        <InstancedRigidBodies
+          positions={cubesTransform.positions}
+          rotations={cubesTransform.rotations}
+          scales={cubesTransform.scales}
         >
-          <boxGeometry />
-          <meshStandardMaterial color="tomato" />
-        </instancedMesh>
+          <instancedMesh
+            castShadows
+            ref={cubesRef}
+            args={[null, null, cubesCount]}
+          >
+            <boxGeometry />
+            <meshStandardMaterial color="tomato" />
+          </instancedMesh>
+        </InstancedRigidBodies>
       </Physics>
     </>
   )
