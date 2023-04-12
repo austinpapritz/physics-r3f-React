@@ -73,8 +73,8 @@ export default function Experience() {
         <Debug />
 
         {/* Burger */}
-        <RigidBody>
-          <primitive object={burger.scene} scale={0.35} />
+        <RigidBody position={[0, 4, 0]}>
+          <primitive object={burger.scene} scale={0.25} />
         </RigidBody>
 
         {/* Ball */}
