@@ -7,6 +7,7 @@ import {
   RigidBody,
   Debug,
   CuboidCollider,
+  CylinderCollider,
   BallCollider,
   HeightfieldCollider,
 } from '@react-three/rapier'
@@ -73,8 +74,9 @@ export default function Experience() {
         <Debug />
 
         {/* Burger */}
-        <RigidBody position={[0, 4, 0]}>
+        <RigidBody position={[0, 4, 0]} colliders={false}>
           <primitive object={burger.scene} scale={0.25} />
+          <CylinderCollider args={[0.5, 1.25]} />
         </RigidBody>
 
         {/* Ball */}
