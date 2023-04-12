@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useFrame } from '@react-three/fiber'
@@ -13,6 +13,9 @@ import {
 import * as THREE from 'three'
 
 export default function Experience() {
+  // this is a trick to save a sound to state so it doesn't overplay on re-renders
+  const [hitSound] = useState(() => new Audio('./hit.mp3'))
+
   const cubeRef = useRef()
   const twisterRef = useRef()
 
@@ -48,6 +51,13 @@ export default function Experience() {
     twisterRef.current.setNextKinematicTranslation({ x: x, y: -0.8, z: z })
   })
 
+  // adds sound to a collision
+  const collisionEnter = () => {
+    hitSound.currentTime = 0
+    hitSound.volume = Math.random()
+    hitSound.play()
+  }
+
   return (
     <>
       <Perf position="top-left" />
@@ -78,6 +88,7 @@ export default function Experience() {
           restitution={0.5}
           friction={0.7}
           colliders={false}
+          onCollisionEnter={collisionEnter}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
