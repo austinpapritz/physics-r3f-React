@@ -14,7 +14,10 @@ export default function Experience() {
   const cubeRef = useRef()
 
   const cubeJump = () => {
-    cubeRef.current.applyImpulse({ x: 0, y: 5, z: 0 })
+    // declare mass to normalize the jump animation no matter what mass
+    const mass = cubeRef.current.mass()
+
+    cubeRef.current.applyImpulse({ x: 0, y: 5 * mass, z: 0 })
     cubeRef.current.applyTorqueImpulse({
       x: Math.random() - 0.5,
       y: Math.random() - 0.5,
@@ -57,7 +60,7 @@ export default function Experience() {
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
-          <CuboidCollider mass={5} args={[0.5, 0.5, 0.5]} />
+          <CuboidCollider mass={11} args={[0.5, 0.5, 0.5]} />
         </RigidBody>
 
         {/* Floor */}
