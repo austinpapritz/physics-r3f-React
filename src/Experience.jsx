@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, useGLTF } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useFrame } from '@react-three/fiber'
 import {
@@ -13,6 +13,8 @@ import {
 import * as THREE from 'three'
 
 export default function Experience() {
+  const burger = useGLTF('./hamburger.glb')
+
   // this is a trick to save a sound to state so it doesn't overplay on re-renders
   const [hitSound] = useState(() => new Audio('./hit.mp3'))
 
@@ -51,7 +53,7 @@ export default function Experience() {
     twisterRef.current.setNextKinematicTranslation({ x: x, y: -0.8, z: z })
   })
 
-  // adds sound to a collision
+  // adds sound to a collision, add onCollisionEnter={collisionEnter} to RigidBody
   // const collisionEnter = () => {
   //   hitSound.currentTime = 0
   //   hitSound.volume = Math.random()
@@ -69,6 +71,11 @@ export default function Experience() {
 
       <Physics gravity={[0, -9.81, 0]}>
         <Debug />
+
+        {/* Burger */}
+        <RigidBody>
+          <primitive object={burger.scene} scale={0.35} />
+        </RigidBody>
 
         {/* Ball */}
         {/* RigidBody creates a collision cuboidal, it works with multiple meshes for one RigidBody  */}
@@ -89,7 +96,6 @@ export default function Experience() {
           restitution={0.5}
           friction={0.7}
           colliders={false}
-          onCollisionEnter={collisionEnter}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
