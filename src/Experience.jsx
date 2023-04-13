@@ -16,7 +16,7 @@ import * as THREE from 'three'
 
 export default function Experience() {
   // TESTING PERFORMANCE WITH CUBES
-  const cubesCount = 3
+  const cubesCount = 100
   const cubesRef = useRef()
   // rendering the cubes on load, if you want them to have physics you have to put the matrix values in the InstancedRigidZBodies
   // useEffect(() => {
@@ -41,11 +41,17 @@ export default function Experience() {
     const scales = []
 
     for (let i = 0; i < cubesCount; i++) {
-      positions.push([i * 2, 0, 0])
-      rotations.push([0, 0, 0])
-      scales.push([Math.random() * 2, Math.random() * 2, Math.random() * 2])
+      // for random positions this is +-4
+      positions.push([
+        (Math.random() - 0.5) * 8,
+        6 + i * 0.2,
+        (Math.random() - 0.5) * 8,
+      ])
+      rotations.push([Math.random(), Math.random(), Math.random()])
+
+      const scale = 0.2 + Math.random() * 0.8
+      scales.push([scale, scale, scale])
     }
-    console.log('positions, rotations, scales', positions, rotations, scales)
 
     return { positions, rotations, scales }
   }, [])
@@ -107,7 +113,7 @@ export default function Experience() {
       <ambientLight intensity={0.5} />
 
       <Physics gravity={[0, -9.81, 0]}>
-        <Debug />
+        {/* <Debug /> */}
 
         {/* Burger */}
         <RigidBody position={[0, 4, 0]} colliders={false}>
