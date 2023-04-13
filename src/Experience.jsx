@@ -16,7 +16,7 @@ import * as THREE from 'three'
 
 export default function Experience() {
   // TESTING PERFORMANCE WITH CUBES
-  const cubesCount = 100
+  const cubesCount = 1000
   const cubesRef = useRef()
   // rendering the cubes on load, if you want them to have physics you have to put the matrix values in the InstancedRigidZBodies
   // useEffect(() => {
